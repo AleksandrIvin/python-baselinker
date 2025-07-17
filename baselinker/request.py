@@ -22,6 +22,15 @@ class Request:
         """
         request_data = {'method': method_name}
         if parameters:
+            remove_empty = parameters.get('remove_empty', False)
+            if remove_empty:
+                parameters = {k: v for k, v in parameters.items() if v}
+
+            try:
+                parameters.pop('remove_empty')
+            except KeyError:
+                pass
+
             request_data['parameters'] = json.dumps(parameters)
         return request_data
 
